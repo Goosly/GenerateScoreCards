@@ -1,1 +1,265 @@
-<!DOCTYPE html><html lang="en-US"ng-app="myApp"ng-controller="myCtrl"><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script><head><title>Generate score cards</title><style>.wrapdiv{width: 900px;height: 800px;top:0;bottom: 0;left: 0;right: 0;margin: auto;}.left{width: 420px;height: 800px;float:left;border-right: 1px dotted black;margin-right: 10px;}.right{overflow: hidden;}</style></head><script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script><script type="text/javascript">var app=angular.module('myApp', []);app.controller('myCtrl', function($scope, $document){$scope.competition="Belgian Summer 2018";/* Variables for generating empty score cards */$scope.event="3x3x3 Cube";$scope.format="5 solves";$scope.limit="10:00";$scope.cutoff="";/* Templates */$scope.basicAo5='<div style="width: 350px"><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px">COMPETITION</p><p style="text-align: center; font-size:20px; margin-top: 5px; margin-bottom: 5px"><strong>EVENT</strong></p><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">Round ROUND | Group GROUP of GROUPS</p><table border="2" style="border-collapse: collapse; margin-bottom: 10px"><tbody><tr style="height: 35"><td style="width: 40; text-align: center; font-size:18px">COMPETITOR_ID</td><td style="width: 310; text-align: center; font-size:18px">COMPETITOR_NAME</td></tr></tbody></table><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 20px;"><td style="width: 20px">&nbsp;</td><td style="width: 220px">Result</td><td style="width: 65px">Judge</td><td style="width: 65px">Competitor</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>1</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>2</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>3</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>4</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>5</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Extra or provisional ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>E</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr></tbody></table></div>';$scope.ao5WithCutoff='<div style="width: 350px"><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px">COMPETITION</p><p style="text-align: center; font-size:20px; margin-top: 5px; margin-bottom: 5px"><strong>EVENT</strong></p><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">Round ROUND | Group GROUP of GROUPS</p><table border="2" style="border-collapse: collapse; margin-bottom: 10px"><tbody><tr style="height: 35"><td style="width: 40; text-align: center; font-size:18px">COMPETITOR_ID</td><td style="width: 310; text-align: center; font-size:18px">COMPETITOR_NAME</td></tr></tbody></table><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 20px;"><td style="width: 20px">&nbsp;</td><td style="width: 220px">Result (DNF if &gt; LIMIT)</td><td style="width: 65px">Judge</td><td style="width: 65px">Competitor</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>1</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>2</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Continue if 1 or 2 &lt; CUTOFF ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>3</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>4</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>5</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Extra or provisional ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>E</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr></tbody></table></div>';$scope.ao5='<div style="width: 350px"><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px">COMPETITION</p><p style="text-align: center; font-size:20px; margin-top: 5px; margin-bottom: 5px"><strong>EVENT</strong></p><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">Round ROUND | Group GROUP of GROUPS</p><table border="2" style="border-collapse: collapse; margin-bottom: 10px"><tbody><tr style="height: 35"><td style="width: 40; text-align: center; font-size:18px">COMPETITOR_ID</td><td style="width: 310; text-align: center; font-size:18px">COMPETITOR_NAME</td></tr></tbody></table><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 20px;"><td style="width: 20px">&nbsp;</td><td style="width: 220px">Result (DNF if &gt; LIMIT)</td><td style="width: 65px">Judge</td><td style="width: 65px">Competitor</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>1</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>2</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>3</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>4</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>5</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Extra or provisional ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>E</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr></tbody></table></div>';$scope.basicMo3='<div style="width: 350px"><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px">COMPETITION</p><p style="text-align: center; font-size:20px; margin-top: 5px; margin-bottom: 5px"><strong>EVENT</strong></p><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">Round ROUND | Group GROUP of GROUPS</p><table border="2" style="border-collapse: collapse; margin-bottom: 10px"><tbody><tr style="height: 35"><td style="width: 40; text-align: center; font-size:18px">COMPETITOR_ID</td><td style="width: 310; text-align: center; font-size:18px">COMPETITOR_NAME</td></tr></tbody></table><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 20px;"><td style="width: 20px">&nbsp;</td><td style="width: 220px">Result</td><td style="width: 65px">Judge</td><td style="width: 65px">Competitor</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>1</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>2</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>3</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Extra or provisional ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>E</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr></tbody></table></div>';$scope.mo3WithCutoff='<div style="width: 350px"><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px">COMPETITION</p><p style="text-align: center; font-size:20px; margin-top: 5px; margin-bottom: 5px"><strong>EVENT</strong></p><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">Round ROUND | Group GROUP of GROUPS</p><table border="2" style="border-collapse: collapse; margin-bottom: 10px"><tbody><tr style="height: 35"><td style="width: 40; text-align: center; font-size:18px">COMPETITOR_ID</td><td style="width: 310; text-align: center; font-size:18px">COMPETITOR_NAME</td></tr></tbody></table><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 20px;"><td style="width: 20px">&nbsp;</td><td style="width: 220px">Result (DNF if &gt; LIMIT)</td><td style="width: 65px">Judge</td><td style="width: 65px">Competitor</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>1</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Continue if 1 &lt; CUTOFF ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>2</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>3</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Extra or provisional ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>E</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr></tbody></table></div>';$scope.mo3='<div style="width: 350px"><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px">COMPETITION</p><p style="text-align: center; font-size:20px; margin-top: 5px; margin-bottom: 5px"><strong>EVENT</strong></p><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">Round ROUND | Group GROUP of GROUPS</p><table border="2" style="border-collapse: collapse; margin-bottom: 10px"><tbody><tr style="height: 35"><td style="width: 40; text-align: center; font-size:18px">COMPETITOR_ID</td><td style="width: 310; text-align: center; font-size:18px">COMPETITOR_NAME</td></tr></tbody></table><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 20px;"><td style="width: 20px">&nbsp;</td><td style="width: 220px">Result (DNF if &gt; LIMIT)</td><td style="width: 65px">Judge</td><td style="width: 65px">Competitor</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>1</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>2</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>3</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Extra or provisional ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>E</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr></tbody></table></div>';$scope.mo3Cumulative='<div style="width: 350px"><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px">COMPETITION</p><p style="text-align: center; font-size:20px; margin-top: 5px; margin-bottom: 5px"><strong>EVENT</strong></p><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">Round ROUND | Group GROUP of GROUPS</p><table border="2" style="border-collapse: collapse; margin-bottom: 10px"><tbody><tr style="height: 35"><td style="width: 40; text-align: center; font-size:18px">COMPETITOR_ID</td><td style="width: 310; text-align: center; font-size:18px">COMPETITOR_NAME</td></tr></tbody></table><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px"><strong>Also write down the time in case of a DNF!</strong></p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 20px;"><td style="width: 20px">&nbsp;</td><td style="width: 220px">Result<br/>(Cumulative limit: CUMULATIVE)</td><td style="width: 65px">Judge</td><td style="width: 65px">Competitor</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>1</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>2</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>3</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Extra or provisional ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>E</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr></tbody></table></div>';$scope.printScorecards=function(scorecards){if (scorecards.length % 4 !==0){alert("Error when printing scorecards! Need 4 per page.");return;}var html="";for(var scorecardIndex=0; scorecardIndex < scorecards.length; scorecardIndex +=4){html +='<table style="page-break-after:always"><tbody><tr style="height: 548px;"><td style="width: 400px; text-align: center">'+ scorecards[scorecardIndex] + '</td><td style="width: 360px; text-align: center">'+ scorecards[scorecardIndex + 1] + '</td></tr><tr style="height: 548;"><td style="width: 400px; text-align: center">'+ scorecards[scorecardIndex + 2] + '</td><td style="width: 360px; text-align: center">'+ scorecards[scorecardIndex + 3] + '</td></tr></tbody></table>';}var WindowObject=$scope.window.open("", "PrintWindow", "width=800,height=800,top=50,left=50,toolbars=no,scrollbars=yes,status=no,resizable=yes");WindowObject.document.writeln(html);WindowObject.document.close();WindowObject.focus();WindowObject.print();WindowObject.close();};$scope.handleRegistrationsResult=function(eventsAsCsv, registrationsAsCsv){/* CSV files were read from disk and are ready to use *//* Parse events.csv: */var headers=eventsAsCsv.split("\n")[0].split(",");var events=eventsAsCsv.split("\n");events.splice(0, 1);for (i=0; i < events.length; i++){if (events[i]===null || events[i]===undefined || events[i]===""){alert("Error when reading events. A line is empty!");}events[i]=events[i].toString().split(",");for (j=0; j < headers.length; j++){events[i][headers[j]]=events[i][j];}}/* Parse registrations.csv: */headers=registrationsAsCsv.split("\n")[0].split(",");var competitors=registrationsAsCsv.split("\n");competitors.splice(0, 1);if (competitors[competitors.length-1]===""){competitors.pop();}for (i=0; i < competitors.length; i++){if (competitors[i]===null || competitors[i]===undefined || competitors[i]===""){alert("Error when reading competitors. A line is empty!");}competitors[i]=competitors[i].toString().split(",");for (j=0; j < headers.length; j++){competitors[i][headers[j]]=competitors[i][j];}competitors[i]["id"]=(i + 1);}/* Generate scorecards per event */var scorecards=[];for (e=0; e < events.length; e++){var event=events[e];if (headers.indexOf(event["event"]) < 0 || event["event"]==="333fm"){continue;}console.log("Start generating scorecards for: " + event["label"]);competitors.sort(function(a, b){return Number(a[event["event"]]) - Number(b[event["event"]]);});var GROUPS=Math.max.apply(Math,competitors.map(function(o){return o[event["event"]];}));for (c=0; c < competitors.length; c++){/* Define all variables needed for the scorecard */var GROUP=competitors[c][event["event"]];if (GROUP==="0" || GROUP===""){continue;}var COMPETITION=$scope.competition;var EVENT=event["label"];var ROUND=1;var COMPETITOR_ID=competitors[c]["id"];var COMPETITOR_NAME=competitors[c]["Name"];var LIMIT=event["limit"];var CUMULATIVE=event["limit"];var CUTOFF=event["cutoff"];var format=event["format"];var cumulative=(event["cumulative"]==="yes");var hasLimit=(LIMIT !=="");var hasCutoff=(CUTOFF !=="");/* Determine which scorecard template to use */var scorecard="";if (format==="ao5"){scorecard=$scope.basicAo5;if (hasLimit){scorecard=$scope.ao5;}if (hasCutoff){scorecard=$scope.ao5WithCutoff;}}else if (format==="mo3"){if (cumulative && hasCutoff){alert("Error when generating scorecards! " + event["label"] + " has a cumulative limit AND a cutoff");}scorecard=$scope.basicMo3;if (hasLimit){$scope.mo3;}if (cumulative){scorecard=$scope.mo3Cumulative;}if (hasCutoff){scorecard=$scope.mo3WithCutoff;}}if (scorecard===""){alert("Error when generating scorecards! " + event["label"] + "'s format should be ao5 or mo3");}/* Fill in all variables on the template */scorecard=scorecard.replace("GROUPS", GROUPS).replace("GROUP", GROUP).replace("COMPETITION", COMPETITION).replace("EVENT", EVENT).replace("ROUND", ROUND).replace("COMPETITOR_ID", COMPETITOR_ID).replace("COMPETITOR_NAME", COMPETITOR_NAME).replace("LIMIT", LIMIT).replace("CUMULATIVE", CUMULATIVE).replace("CUTOFF", CUTOFF);scorecards.push(scorecard);console.log("Added scorecard for " + COMPETITOR_NAME + ", group " + GROUP + " of " + GROUPS);}/* Add nothing until page is full */while(scorecards.length %4 !==0){scorecards.push("");}}$scope.printScorecards(scorecards);};$scope.handleEventsResult=function(events){var file=document.getElementById('fileRegistrations').files[0];if (file){var reader=new FileReader();reader.readAsText(file);reader.onload=function(e){$scope.handleRegistrationsResult(events, e.target.result);};}};$("#btnPrint").live("click", function (){$scope.window=window;var file=document.getElementById('fileEvents').files[0];if (file){var reader=new FileReader();reader.readAsText(file);reader.onload=function(e){$scope.handleEventsResult(e.target.result);};}});$("#btnPrintEmptyCards").live("click", function (){$scope.window=window;var scorecards=[];/* Define all variables needed for the scorecard */var COMPETITION=$scope.competition;var EVENT=$scope.event;var LIMIT=$scope.limit;var CUMULATIVE=$scope.limit;var CUTOFF=$scope.cutoff;var cumulative=$scope.cumulative;var cutoff=($scope.cutoff !=="");/* Determine which scorecard template to use */var scorecard="";if ($scope.format==="5 solves"){scorecard=$scope.cutoff ? $scope.ao5WithCutoff : $scope.ao5;}else if ($scope.format==="3 solves"){scorecard=cutoff ? $scope.mo3WithCutoff : (cumulative ? $scope.mo3Cumulative : $scope.mo3);}if (scorecard===""){alert("Error when generating scorecards! Something might be wrong with the configuration");}/* Fill in all variables on the template */scorecard=scorecard.replace("GROUPS", "___").replace("GROUP", "___").replace("COMPETITION", COMPETITION).replace("EVENT", EVENT).replace("ROUND", "___").replace("COMPETITOR_ID", "").replace("COMPETITOR_NAME", "").replace("LIMIT", LIMIT).replace("CUMULATIVE", CUMULATIVE).replace("CUTOFF", CUTOFF);scorecards.push(scorecard);scorecards.push(scorecard);scorecards.push(scorecard);scorecards.push(scorecard);$scope.printScorecards(scorecards);});});</script><body><div class="wrapdiv"><div class="left"><br/><br/><br/><br/><h2>Generate score cards</h2><label><b>Step 1:</b> Competition name:</label><br/><input type="text" ng-model="competition"/><br/><br/><label><b>Step 2:</b> select events.csv (use the example &rarr;)</label><br/><input type="file" id="fileEvents" accept=".csv"/><br/><br/><label><b>Step 3:</b> select registrations.csv (use the example &rarr;)</label><br/><label>When used in combination with Cubecomps, make sure to use the same sorting so the id's are correct!</label><br/><input type="file" id="fileRegistrations" accept=".csv"/><br/><br/><label><b>Step 4:</b> Generate score cards! (for known issues see &rarr;)</label><br/><input type="button" value="Generate" id="btnPrint"/><br/><br/><br/><br/><br/><br/><br/><h3>Generate empty score cards</h3><table> <tr><td>Event:</td><td><select ng-model="event"><option value="2x2x2 Cube">2x2x2 Cube</option><option value="3x3x3 Cube">3x3x3 Cube</option><option value="4x4x4 Cube">4x4x4 Cube</option><option value="5x5x5 Cube">5x5x5 Cube</option><option value="6x6x6 Cube">6x6x6 Cube</option><option value="7x7x7 Cube">7x7x7 Cube</option><option value="3x3x3 Blindfolded">3x3x3 Blindfolded</option><option value="3x3x3 One-Handed">3x3x3 One-Handed</option><option value="3x3x3 With Feet">3x3x3 With Feet</option><option value="Clock">Clock</option><option value="Megaminx">Megaminx</option><option value="Pyraminx">Pyraminx</option><option value="Skewb">Skewb</option><option value="Square-1">Square-1</option><option value="4x4x4 Blindfolded">4x4x4 Blindfolded</option><option value="5x5x5 Blindfolded">5x5x5 Blindfolded</option><option value="3x3x3 Multi-Blind">3x3x3 Multi-Blind</option></select></td></tr><tr><td>Format:</td><td><select ng-model="format"><option value="5 solves">5 solves</option><option value="3 solves">3 solves</option></select></td></tr><tr><td>Cutoff:</td><td><input type="text" ng-model="cutoff"/></td></tr><tr><td>Limit:</td><td><input type="text" ng-model="limit"/></td></tr><tr><td>Limit is cumulative:</td><td><input type="checkbox" ng-model="cumulative"/></td></tr></table></br><input type="button" value="Generate" id="btnPrintEmptyCards"/><br/></div><div class="right"><h2>README</h2><h3>Features</h3><p>This is a tool for generating score cards for WCA competitions. The main features are:</p><ul><li>Sorted per group (rather than alphabetically)</li><li>Clear instructions for cutoffs, limits and cumulative limits</li></ul><h3>Example input</h3><a href="https://drive.google.com/open?id=1GxWUi3wxfhBejN3bQvMIxMQ5v1648LE6" target="_blank">Example events.csv and registrations.csv</a><br/><p>events.csv: make sure the cutoffs and limits are correct</p><p>registrations.csv: a modified registration list. For your own competition, start with the export from WCA and modify every '1' to the group the competitor will compete in. This must be a number! Leave the '0's. Of course this modification can be done either manually or - preferably - with another tool :-)</p><h3>Known issues/troubleshooting</h3><ul> <li>Some browsers will block the popup for printing. Make sure to allow it (usually in the top-right corner)</li><li>Print settings: portrait (not landscape)</li><li>Print settings: make marges as small as possible</li><li>Sometimes every other page will be blank</li></ul> <p>Tested in:</p><ul><li>Windows 7 + Google chrome</li><li>Windows 10 + Google chrome</li><li>Windows 10 + Edge</li></ul><p>IE and Firefox always seem to print headers and footers, which breaks the layout of the scorecards</p></div></div></body></html>
+<!DOCTYPE html>
+<html lang="en-US" ng-app="myApp" ng-controller="myCtrl">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
+<head>
+    <title>Generate score cards</title>
+    <style>.wrapdiv{width: 900px;height: 800px;top:0;bottom: 0;left: 0;right: 0;margin: auto;}.left{width: 420px;height: 800px;float:left;border-right: 1px dotted black;margin-right: 10px;}.right{overflow: hidden;}</style>
+</head>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope, $document) {
+        $scope.competition = "Belgian Summer 2018"; /* Variables for generating empty score cards */
+        $scope.event = "3x3x3 Cube";
+        $scope.format = "5 solves";
+        $scope.limit = "10:00";
+        $scope.cutoff = ""; /* Templates */
+        $scope.basicAo5 = '<div style="width: 350px"><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px">COMPETITION</p><p style="text-align: center; font-size:20px; margin-top: 5px; margin-bottom: 5px"><strong>EVENT</strong></p><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">Round ROUND | Group GROUP of GROUPS</p><table border="2" style="border-collapse: collapse; margin-bottom: 10px"><tbody><tr style="height: 35"><td style="width: 40; text-align: center; font-size:18px">COMPETITOR_ID</td><td style="width: 310; text-align: center; font-size:18px">COMPETITOR_NAME</td></tr></tbody></table><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 20px;"><td style="width: 20px">&nbsp;</td><td style="width: 220px">Result</td><td style="width: 65px">Judge</td><td style="width: 65px">Competitor</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>1</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>2</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>3</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>4</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>5</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Extra or provisional ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>E</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr></tbody></table></div>';
+        $scope.ao5WithCutoff = '<div style="width: 350px"><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px">COMPETITION</p><p style="text-align: center; font-size:20px; margin-top: 5px; margin-bottom: 5px"><strong>EVENT</strong></p><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">Round ROUND | Group GROUP of GROUPS</p><table border="2" style="border-collapse: collapse; margin-bottom: 10px"><tbody><tr style="height: 35"><td style="width: 40; text-align: center; font-size:18px">COMPETITOR_ID</td><td style="width: 310; text-align: center; font-size:18px">COMPETITOR_NAME</td></tr></tbody></table><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 20px;"><td style="width: 20px">&nbsp;</td><td style="width: 220px">Result (DNF if &gt; LIMIT)</td><td style="width: 65px">Judge</td><td style="width: 65px">Competitor</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>1</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>2</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Continue if 1 or 2 &lt; CUTOFF ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>3</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>4</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>5</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Extra or provisional ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>E</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr></tbody></table></div>';
+        $scope.ao5 = '<div style="width: 350px"><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px">COMPETITION</p><p style="text-align: center; font-size:20px; margin-top: 5px; margin-bottom: 5px"><strong>EVENT</strong></p><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">Round ROUND | Group GROUP of GROUPS</p><table border="2" style="border-collapse: collapse; margin-bottom: 10px"><tbody><tr style="height: 35"><td style="width: 40; text-align: center; font-size:18px">COMPETITOR_ID</td><td style="width: 310; text-align: center; font-size:18px">COMPETITOR_NAME</td></tr></tbody></table><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 20px;"><td style="width: 20px">&nbsp;</td><td style="width: 220px">Result (DNF if &gt; LIMIT)</td><td style="width: 65px">Judge</td><td style="width: 65px">Competitor</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>1</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>2</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>3</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>4</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>5</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Extra or provisional ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>E</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr></tbody></table></div>';
+        $scope.basicMo3 = '<div style="width: 350px"><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px">COMPETITION</p><p style="text-align: center; font-size:20px; margin-top: 5px; margin-bottom: 5px"><strong>EVENT</strong></p><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">Round ROUND | Group GROUP of GROUPS</p><table border="2" style="border-collapse: collapse; margin-bottom: 10px"><tbody><tr style="height: 35"><td style="width: 40; text-align: center; font-size:18px">COMPETITOR_ID</td><td style="width: 310; text-align: center; font-size:18px">COMPETITOR_NAME</td></tr></tbody></table><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 20px;"><td style="width: 20px">&nbsp;</td><td style="width: 220px">Result</td><td style="width: 65px">Judge</td><td style="width: 65px">Competitor</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>1</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>2</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>3</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Extra or provisional ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>E</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr></tbody></table></div>';
+        $scope.mo3WithCutoff = '<div style="width: 350px"><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px">COMPETITION</p><p style="text-align: center; font-size:20px; margin-top: 5px; margin-bottom: 5px"><strong>EVENT</strong></p><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">Round ROUND | Group GROUP of GROUPS</p><table border="2" style="border-collapse: collapse; margin-bottom: 10px"><tbody><tr style="height: 35"><td style="width: 40; text-align: center; font-size:18px">COMPETITOR_ID</td><td style="width: 310; text-align: center; font-size:18px">COMPETITOR_NAME</td></tr></tbody></table><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 20px;"><td style="width: 20px">&nbsp;</td><td style="width: 220px">Result (DNF if &gt; LIMIT)</td><td style="width: 65px">Judge</td><td style="width: 65px">Competitor</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>1</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Continue if 1 &lt; CUTOFF ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>2</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>3</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Extra or provisional ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>E</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr></tbody></table></div>';
+        $scope.mo3 = '<div style="width: 350px"><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px">COMPETITION</p><p style="text-align: center; font-size:20px; margin-top: 5px; margin-bottom: 5px"><strong>EVENT</strong></p><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">Round ROUND | Group GROUP of GROUPS</p><table border="2" style="border-collapse: collapse; margin-bottom: 10px"><tbody><tr style="height: 35"><td style="width: 40; text-align: center; font-size:18px">COMPETITOR_ID</td><td style="width: 310; text-align: center; font-size:18px">COMPETITOR_NAME</td></tr></tbody></table><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 20px;"><td style="width: 20px">&nbsp;</td><td style="width: 220px">Result (DNF if &gt; LIMIT)</td><td style="width: 65px">Judge</td><td style="width: 65px">Competitor</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>1</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>2</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>3</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Extra or provisional ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>E</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr></tbody></table></div>';
+        $scope.mo3Cumulative = '<div style="width: 350px"><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px">COMPETITION</p><p style="text-align: center; font-size:20px; margin-top: 5px; margin-bottom: 5px"><strong>EVENT</strong></p><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">Round ROUND | Group GROUP of GROUPS</p><table border="2" style="border-collapse: collapse; margin-bottom: 10px"><tbody><tr style="height: 35"><td style="width: 40; text-align: center; font-size:18px">COMPETITOR_ID</td><td style="width: 310; text-align: center; font-size:18px">COMPETITOR_NAME</td></tr></tbody></table><p style="text-align: center; font-size:15px; margin-top: 5px; margin-bottom: 5px"><strong>Also write down the time in case of a DNF!</strong></p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 20px;"><td style="width: 20px">&nbsp;</td><td style="width: 220px">Result<br/>(Cumulative limit: CUMULATIVE)</td><td style="width: 65px">Judge</td><td style="width: 65px">Competitor</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>1</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>2</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr style="height: 45px;"><td style="text-align: center;"><strong>3</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p style="text-align: center; margin-top: 5px; margin-bottom: 5px">---------- Extra or provisional ----------</p><table border="2" style="border-collapse: collapse"><tbody><tr style="height: 45px;"><td style="width: 20px; text-align: center;"><strong>E</strong></td><td style="width: 205px">&nbsp;</td><td style="width: 65px">&nbsp;</td><td style="width: 80px">&nbsp;</td></tr></tbody></table></div>';
+        $scope.printScorecards = function(scorecards) {
+            if (scorecards.length % 4 !== 0) {
+                alert("Error when printing scorecards! Need 4 per page.");
+                return;
+            }
+            var html = "";
+            for (var scorecardIndex = 0; scorecardIndex < scorecards.length; scorecardIndex += 4) {
+                html += '<table style="page-break-after:always"><tbody><tr style="height: 548px;"><td style="width: 400px; text-align: center">' + scorecards[scorecardIndex] + '</td><td style="width: 360px; text-align: center">' + scorecards[scorecardIndex + 1] + '</td></tr><tr style="height: 548;"><td style="width: 400px; text-align: center">' + scorecards[scorecardIndex + 2] + '</td><td style="width: 360px; text-align: center">' + scorecards[scorecardIndex + 3] + '</td></tr></tbody></table>';
+            }
+            var WindowObject = $scope.window.open("", "PrintWindow", "width=800,height=800,top=50,left=50,toolbars=no,scrollbars=yes,status=no,resizable=yes");
+            WindowObject.document.writeln(html);
+            WindowObject.document.close();
+            WindowObject.focus();
+            WindowObject.print();
+            WindowObject.close();
+        };
+        $scope.handleRegistrationsResult = function(eventsAsCsv, registrationsAsCsv) { /* CSV files were read from disk and are ready to use */ /* Parse events.csv: */
+            var headers = eventsAsCsv.split("\n")[0].split(",");
+            var events = eventsAsCsv.split("\n");
+            events.splice(0, 1);
+            for (i = 0; i < events.length; i++) {
+                if (events[i] === null || events[i] === undefined || events[i] === "") {
+                    alert("Error when reading events. A line is empty!");
+                }
+                events[i] = events[i].toString().split(",");
+                for (j = 0; j < headers.length; j++) {
+                    events[i][headers[j]] = events[i][j];
+                }
+            } /* Parse registrations.csv: */
+            headers = registrationsAsCsv.split("\n")[0].split(",");
+            var competitors = registrationsAsCsv.split("\n");
+            competitors.splice(0, 1);
+            if (competitors[competitors.length - 1] === "") {
+                competitors.pop();
+            }
+            for (i = 0; i < competitors.length; i++) {
+                if (competitors[i] === null || competitors[i] === undefined || competitors[i] === "") {
+                    alert("Error when reading competitors. A line is empty!");
+                }
+                competitors[i] = competitors[i].toString().split(",");
+                for (j = 0; j < headers.length; j++) {
+                    competitors[i][headers[j]] = competitors[i][j];
+                }
+                competitors[i]["id"] = (i + 1);
+            } /* Generate scorecards per event */
+            var scorecards = [];
+            for (e = 0; e < events.length; e++) {
+                var event = events[e];
+                if (headers.indexOf(event["event"]) < 0 || event["event"] === "333fm") {
+                    continue;
+                }
+                console.log("Start generating scorecards for: " + event["label"]);
+                competitors.sort(function(a, b) {
+                    return Number(a[event["event"]]) - Number(b[event["event"]]);
+                });
+                var GROUPS = Math.max.apply(Math, competitors.map(function(o) {
+                    return o[event["event"]];
+                }));
+                for (c = 0; c < competitors.length; c++) { /* Define all variables needed for the scorecard */
+                    var GROUP = competitors[c][event["event"]];
+                    if (GROUP === "0" || GROUP === "") {
+                        continue;
+                    }
+                    var COMPETITION = $scope.competition;
+                    var EVENT = event["label"];
+                    var ROUND = 1;
+                    var COMPETITOR_ID = competitors[c]["id"];
+                    var COMPETITOR_NAME = competitors[c]["Name"];
+                    var LIMIT = event["limit"];
+                    var CUMULATIVE = event["limit"];
+                    var CUTOFF = event["cutoff"];
+                    var format = event["format"];
+                    var cumulative = (event["cumulative"] === "yes");
+                    var hasLimit = (LIMIT !== "");
+                    var hasCutoff = (CUTOFF !== ""); /* Determine which scorecard template to use */
+                    var scorecard = "";
+                    if (format === "ao5") {
+                        scorecard = $scope.basicAo5;
+                        if (hasLimit) {
+                            scorecard = $scope.ao5;
+                        }
+                        if (hasCutoff) {
+                            scorecard = $scope.ao5WithCutoff;
+                        }
+                    } else if (format === "mo3") {
+                        if (cumulative && hasCutoff) {
+                            alert("Error when generating scorecards! " + event["label"] + " has a cumulative limit AND a cutoff");
+                        }
+                        scorecard = $scope.basicMo3;
+                        if (hasLimit) {
+                            $scope.mo3;
+                        }
+                        if (cumulative) {
+                            scorecard = $scope.mo3Cumulative;
+                        }
+                        if (hasCutoff) {
+                            scorecard = $scope.mo3WithCutoff;
+                        }
+                    }
+                    if (scorecard === "") {
+                        alert("Error when generating scorecards! " + event["label"] + "'s format should be ao5 or mo3");
+                    } /* Fill in all variables on the template */
+                    scorecard = scorecard.replace("GROUPS", GROUPS).replace("GROUP", GROUP).replace("COMPETITION", COMPETITION).replace("EVENT", EVENT).replace("ROUND", ROUND).replace("COMPETITOR_ID", COMPETITOR_ID).replace("COMPETITOR_NAME", COMPETITOR_NAME).replace("LIMIT", LIMIT).replace("CUMULATIVE", CUMULATIVE).replace("CUTOFF", CUTOFF);
+                    scorecards.push(scorecard);
+                    console.log("Added scorecard for " + COMPETITOR_NAME + ", group " + GROUP + " of " + GROUPS);
+                } /* Add nothing until page is full */
+                while (scorecards.length % 4 !== 0) {
+                    scorecards.push("");
+                }
+            }
+            $scope.printScorecards(scorecards);
+        };
+        $scope.handleEventsResult = function(events) {
+            var file = document.getElementById('fileRegistrations').files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.readAsText(file);
+                reader.onload = function(e) {
+                    $scope.handleRegistrationsResult(events, e.target.result);
+                };
+            }
+        };
+        $("#btnPrint").live("click", function() {
+            $scope.window = window;
+            var file = document.getElementById('fileEvents').files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.readAsText(file);
+                reader.onload = function(e) {
+                    $scope.handleEventsResult(e.target.result);
+                };
+            }
+        });
+        $("#btnPrintEmptyCards").live("click", function() {
+            $scope.window = window;
+            var scorecards = []; /* Define all variables needed for the scorecard */
+            var COMPETITION = $scope.competition;
+            var EVENT = $scope.event;
+            var LIMIT = $scope.limit;
+            var CUMULATIVE = $scope.limit;
+            var CUTOFF = $scope.cutoff;
+            var cumulative = $scope.cumulative;
+            var cutoff = ($scope.cutoff !== ""); /* Determine which scorecard template to use */
+            var scorecard = "";
+            if ($scope.format === "5 solves") {
+                scorecard = $scope.cutoff ? $scope.ao5WithCutoff : $scope.ao5;
+            } else if ($scope.format === "3 solves") {
+                scorecard = cutoff ? $scope.mo3WithCutoff : (cumulative ? $scope.mo3Cumulative : $scope.mo3);
+            }
+            if (scorecard === "") {
+                alert("Error when generating scorecards! Something might be wrong with the configuration");
+            } /* Fill in all variables on the template */
+            scorecard = scorecard.replace("GROUPS", "___").replace("GROUP", "___").replace("COMPETITION", COMPETITION).replace("EVENT", EVENT).replace("ROUND", "___").replace("COMPETITOR_ID", "").replace("COMPETITOR_NAME", "").replace("LIMIT", LIMIT).replace("CUMULATIVE", CUMULATIVE).replace("CUTOFF", CUTOFF);
+            scorecards.push(scorecard);
+            scorecards.push(scorecard);
+            scorecards.push(scorecard);
+            scorecards.push(scorecard);
+            $scope.printScorecards(scorecards);
+        });
+    });
+</script>
+
+<body>
+    <div class="wrapdiv">
+        <div class="left"><br /><br /><br /><br />
+            <h2>Generate score cards</h2><label><b>Step 1:</b> Competition name:</label><br /><input type="text" ng-model="competition" /><br /><br /><label><b>Step 2:</b> select events.csv (use the example &rarr;)</label><br /><input type="file" id="fileEvents" accept=".csv" /><br /><br /><label><b>Step 3:</b> select registrations.csv (use the example &rarr;)</label><br /><label>When used in combination with Cubecomps, make sure to use the same sorting so the id's are correct!</label><br /><input type="file" id="fileRegistrations" accept=".csv" /><br /><br /><label><b>Step 4:</b> Generate score cards! (for known issues see &rarr;)</label><br /><input type="button" value="Generate" id="btnPrint" /><br /><br /><br /><br /><br /><br /><br />
+            <h3>Generate empty score cards</h3>
+            <table>
+                <tr>
+                    <td>Event:</td>
+                    <td><select ng-model="event">
+                            <option value="2x2x2 Cube">2x2x2 Cube</option>
+                            <option value="3x3x3 Cube">3x3x3 Cube</option>
+                            <option value="4x4x4 Cube">4x4x4 Cube</option>
+                            <option value="5x5x5 Cube">5x5x5 Cube</option>
+                            <option value="6x6x6 Cube">6x6x6 Cube</option>
+                            <option value="7x7x7 Cube">7x7x7 Cube</option>
+                            <option value="3x3x3 Blindfolded">3x3x3 Blindfolded</option>
+                            <option value="3x3x3 One-Handed">3x3x3 One-Handed</option>
+                            <option value="3x3x3 With Feet">3x3x3 With Feet</option>
+                            <option value="Clock">Clock</option>
+                            <option value="Megaminx">Megaminx</option>
+                            <option value="Pyraminx">Pyraminx</option>
+                            <option value="Skewb">Skewb</option>
+                            <option value="Square-1">Square-1</option>
+                            <option value="4x4x4 Blindfolded">4x4x4 Blindfolded</option>
+                            <option value="5x5x5 Blindfolded">5x5x5 Blindfolded</option>
+                            <option value="3x3x3 Multi-Blind">3x3x3 Multi-Blind</option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <td>Format:</td>
+                    <td><select ng-model="format">
+                            <option value="5 solves">5 solves</option>
+                            <option value="3 solves">3 solves</option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <td>Cutoff:</td>
+                    <td><input type="text" ng-model="cutoff" /></td>
+                </tr>
+                <tr>
+                    <td>Limit:</td>
+                    <td><input type="text" ng-model="limit" /></td>
+                </tr>
+                <tr>
+                    <td>Limit is cumulative:</td>
+                    <td><input type="checkbox" ng-model="cumulative" /></td>
+                </tr>
+            </table></br><input type="button" value="Generate" id="btnPrintEmptyCards" /><br />
+        </div>
+        <div class="right">
+            <h2>README</h2>
+            <h3>Features</h3>
+            <p>This is a tool for generating score cards for WCA competitions. The main features are:</p>
+            <ul>
+                <li>Sorted per group (rather than alphabetically)</li>
+                <li>Clear instructions for cutoffs, limits and cumulative limits</li>
+            </ul>
+            <h3>Example input</h3><a href="https://drive.google.com/open?id=1GxWUi3wxfhBejN3bQvMIxMQ5v1648LE6" target="_blank">Example events.csv and registrations.csv</a><br />
+            <p>events.csv: make sure the cutoffs and limits are correct</p>
+            <p>registrations.csv: a modified registration list. For your own competition, start with the export from WCA and modify every '1' to the group the competitor will compete in. This must be a number! Leave the '0's. Of course this modification can be done either manually or - preferably - with another tool :-)</p>
+            <h3>Known issues/troubleshooting</h3>
+            <ul>
+                <li>Some browsers will block the popup for printing. Make sure to allow it (usually in the top-right corner)</li>
+                <li>Print settings: portrait (not landscape)</li>
+                <li>Print settings: make marges as small as possible</li>
+                <li>Sometimes every other page will be blank</li>
+            </ul>
+            <p>Tested in:</p>
+            <ul>
+                <li>Windows 7 + Google chrome</li>
+                <li>Windows 10 + Google chrome</li>
+                <li>Windows 10 + Edge</li>
+            </ul>
+            <p>IE and Firefox always seem to print headers and footers, which breaks the layout of the scorecards</p>
+        </div>
+    </div>
+</body>
+
+</html>
